@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Personal Dev Notes: Book Reading List
 
-## Getting Started
+## Project Purpose
+Practice project for learning Next.js (App Router) and Redux Toolkit. Main goal: manage a reading list (add, update, mark as read, notes, rating).
 
-First, run the development server:
+## Assignment Requirements & Features (2025)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Redux Global State
+- **Books**: Managed in `features/books/booksSlice.js` (add, remove, update, toggle read, notes, rating).
+- **Notifications**: Managed in `features/notifications/notificationsSlice.js` (show/dismiss messages for user actions).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Components Using Redux
+- **BookList, BookItem**: Read from and dispatch actions to the books slice.
+- **NotificationBanner**: Reads notifications and dispatches removeNotification.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Local State
+- **BookForm**: Uses `useState` for form input handling before dispatching Redux actions.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Provider Setup
+- App is wrapped in `<Provider>` with the Redux store in `src/app/Provider.js` and used in `layout.js`.
 
-## Learn More
+### Routing
+- **/reading-list**: Main reading list page.
+- **/book/[id]**: Dynamic route for individual book details.
 
-To learn more about Next.js, take a look at the following resources:
+## Folder/File Explanations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Root
+- **eslint.config.mjs**: ESLint config for linting JS/React code.
+- **jsconfig.json**: JS project config, helps VSCode/Next.js with path aliases.
+- **next.config.mjs**: Next.js config (custom settings, if needed).
+- **package.json**: Project dependencies and scripts.
+- **postcss.config.mjs**: PostCSS config for CSS processing (used by Next.js).
+- **README.md**: (This file) Personal notes on project structure and reasoning.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### public/
+- **SVGs**: Used for UI icons/logos.
 
-## Deploy on Vercel
+### src/app/
+- **favicon.ico, globals.css**: App-wide assets/styles.
+- **layout.js**: App shell/layout, wraps all pages.
+- **page.js**: Home page (could be a landing or redirect).
+- **Provider.js**: Wraps app in Redux Provider (so all pages/components can access store).
+- **store.js**: Configures Redux store, imports booksSlice.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### app/reading-list/page.js
+- Main reading list UI. Lists books, allows add/remove/toggle.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### app/book/[id]/page.js
+- Dynamic route for individual book details (notes, rating, etc).
+
+### src/features/books/
+- **booksSlice.js**: Redux slice for books state. Handles add, remove, toggle, update details, rating. Central logic for book data.
+- **BookForm.js**: Form UI for adding a new book.
+- **BookItem.js**: Renders a single book in the list, with actions (toggle, remove, etc).
+- **BookList.js**: Renders the list of all books, maps over BookItem.
+
+### src/features/notifications/
+- **notificationsSlice.js**: Redux slice for notifications state.
+- **NotificationBanner.js**: Shows notifications and allows dismissing them.
+
+## Design/Reasoning
+- **Redux Toolkit**: Used for simple, predictable state management. booksSlice keeps all book logic in one place.
+- **App Router (Next.js)**: Each page is a folder. Dynamic routing for book details.
+- **Component Structure**: Split into small, focused components (form, item, list) for clarity and reusability.
+- **Notes Count**: Track how many times notes/details are updated (for practice with derived state).
+- **nanoid**: Used for unique book IDs.
+
+## To Do / Ideas
+- Add persistent storage (localStorage or backend)
+- Add filtering/sorting
+- Add user authentication
+
+---
+This file is just for me. Not meant for public consumption.
